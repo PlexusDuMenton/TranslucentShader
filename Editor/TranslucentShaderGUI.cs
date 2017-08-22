@@ -15,6 +15,7 @@ struct RenderingSettings
     public bool zWrite;
 
 
+
     public static RenderingSettings[] modes = {
             new RenderingSettings() {
                 queue = RenderQueue.Geometry,
@@ -53,6 +54,7 @@ public class TranslucentShaderGUI : ShaderGUI{
     MaterialEditor editor;
     MaterialProperty[] properties;
     Material target;
+    public bool invertTransNormal;
 
     public override void OnGUI(
         MaterialEditor editor, MaterialProperty[] properties
@@ -188,6 +190,9 @@ public class TranslucentShaderGUI : ShaderGUI{
             sliderSSS,
             MakeLabel(sliderSSS, "Increase / Reduce Translucency area")
         );
+        invertTransNormal = EditorGUILayout.Toggle("Invert Translucent normal", invertTransNormal);
+        RecordAction("Rendering Mode");
+        SetKeyword("_INVERTNORMALTRANSLUCENT", invertTransNormal);
     }
 
     bool shouldShowAlphaCutoff;

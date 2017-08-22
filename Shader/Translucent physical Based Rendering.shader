@@ -49,6 +49,7 @@
 		Tags { "RenderType"="Opaque" }
 		LOD 100
 
+		// ================ BASE PASS
 		Pass
 		{
 			Tags {
@@ -56,7 +57,7 @@
 			}
 			Blend [_SrcBlend] [_DstBlend]
 			ZWrite [_ZWrite]
-			Cull Off
+			Cull Front //Write back pixel
 			CGPROGRAM
 			
 			#pragma target 3.0
@@ -67,6 +68,34 @@
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
+			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
+
+			#define FORWARD_BASE_PASS
+			#define FORWARD_BACK_PASS
+
+			#include "Translucent.cginc"
+
+			ENDCG
+		}
+		Pass
+		{
+			Tags {
+				"LightMode" = "ForwardBase" 
+			}
+			Blend [_SrcBlend] [_DstBlend]
+			ZWrite [_ZWrite]
+			Cull Back
+			CGPROGRAM
+			
+			#pragma target 3.0
+			#pragma multi_compile _ SHADOWS_SCREEN
+			#pragma multi_compile _ VERTEXLIGHT_ON
+			#pragma multi_compile_fog
+
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
+			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
 
 			#define FORWARD_BASE_PASS
 
@@ -74,6 +103,34 @@
 
 			ENDCG
 		}
+
+
+
+		//==== FORWARD ADD PASS
+		Pass {
+			Tags {
+				"LightMode" = "ForwardAdd"
+			}
+			Blend [_SrcBlend] One
+			ZWrite Off
+			Cull Front
+			CGPROGRAM
+			
+			#pragma target 3.0
+			#pragma multi_compile_fwdadd_fullshadows
+			#pragma multi_compile_fog
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
+			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
+			#define FORWARD_BACK_PASS
+			#include "Translucent.cginc"
+
+			ENDCG
+
+		}
+
+		
 		Pass {
 			Tags {
 				"LightMode" = "ForwardAdd"
@@ -89,6 +146,7 @@
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
+			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
 			#include "Translucent.cginc"
 
 			ENDCG

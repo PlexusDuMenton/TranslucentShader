@@ -346,7 +346,9 @@
         i.uv.zw = TRANSFORM_TEX(v.uv, _DetailTex);
 
 	    TRANSFER_SHADOW(i);
-
+        #if defined(FORWARD_BACK_PASS)
+            i.normal *= -1;
+        #endif
         i.viewDir = WorldSpaceViewDir (v.vertex);
 
         ComputeVertexLightColor(v);
@@ -356,7 +358,9 @@
 
     float3 TranslucentLightFrag(v2f i){
         float3 inversedNormal = i.normal;
-        inversedNormal *= -1;
+        #if defined(_INVERTNORMALTRANSLUCENT)
+            inversedNormal *= -1;
+        #endif
         UnityLight Light = CreateTranslucentLight (i,inversedNormal);
 
         float3 lightImpact = pow(tex2D(_TranslucencyMap, i.uv.xy) * Light.ndotl * float4(Light.color,1),2)*_TranslucencyColor;
