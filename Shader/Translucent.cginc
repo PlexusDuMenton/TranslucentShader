@@ -288,12 +288,22 @@
         #endif
 
         UNITY_LIGHT_ATTENUATION(attenuation, i, i.worldPos);
-
-        light.color = _LightColor0.rgb * saturate(attenuation + saturate((_SSS * 1.5) - 0.15) + 0.15);
+        #if !defined(SPOT)
+            light.color = _LightColor0.rgb * saturate(attenuation + saturate((_SSS * 1.5) - 0.15) + 0.15);
+        #else
+            light.color = _LightColor0.rgb *attenuation;
+        #endif
         light.ndotl = DotClamped(normal, light.dir) * (1 - _SSS) + _SSS;
         float3 viewDir = normalize(i.viewDir);
         light.ndotl = clamp(light.ndotl * 0.8 + pow((-abs(dot(normal, light.dir)) + 1), 0.5), 0, 1);
-                
+        float3 normal4view = -normal;
+#if defined(FORWARD_BACK_PASS)
+            normal4view *= -1;
+        #endif
+        #if defined(_INVERTNORMAL)
+            normal4view *= -1;
+        #endif
+    float scale = _TranslucencyScale * (1+dot(normal4view, viewDir)*0.5);
         float4 specular = 0;
         if (_TranslucencyPower > 0)
         {
@@ -301,7 +311,7 @@
             specular *= attenuation;
         }
                 
-        light.ndotl = (specular * 2 * _TranslucencyPower + light.ndotl * 0.8) * _TranslucencyScale;
+        light.ndotl = (specular * 2 * _TranslucencyPower + light.ndotl * 0.8) * scale;
         return light;
     }
 
