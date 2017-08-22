@@ -55,6 +55,7 @@ public class TranslucentShaderGUI : ShaderGUI{
     MaterialProperty[] properties;
     Material target;
     public bool invertTransNormal;
+    public bool invertNormal;
 
     public override void OnGUI(
         MaterialEditor editor, MaterialProperty[] properties
@@ -191,8 +192,12 @@ public class TranslucentShaderGUI : ShaderGUI{
             MakeLabel(sliderSSS, "Increase / Reduce Translucency area")
         );
         invertTransNormal = EditorGUILayout.Toggle("Invert Translucent normal", invertTransNormal);
-        RecordAction("Rendering Mode");
+
         SetKeyword("_INVERTNORMALTRANSLUCENT", invertTransNormal);
+        invertNormal = EditorGUILayout.Toggle("Invert normal", invertNormal);
+
+        SetKeyword("_INVERTNORMAL", invertNormal);
+        
     }
 
     bool shouldShowAlphaCutoff;

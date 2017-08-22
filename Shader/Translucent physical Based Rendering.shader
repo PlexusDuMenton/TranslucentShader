@@ -69,6 +69,7 @@
 			#pragma fragment frag
 			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
 			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
+			#pragma shader_feature _ _INVERTNORMAL
 
 			#define FORWARD_BASE_PASS
 			#define FORWARD_BACK_PASS
@@ -96,6 +97,7 @@
 			#pragma fragment frag
 			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
 			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
+			#pragma shader_feature _ _INVERTNORMAL
 
 			#define FORWARD_BASE_PASS
 
@@ -123,6 +125,7 @@
 			#pragma fragment frag
 			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
 			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
+			#pragma shader_feature _ _INVERTNORMAL
 			#define FORWARD_BACK_PASS
 			#include "Translucent.cginc"
 
@@ -147,6 +150,7 @@
 			#pragma fragment frag
 			#pragma shader_feature _ _RENDERING_CUTOUT _RENDERING_FADE _RENDERING_TRANSPARENT
 			#pragma shader_feature _ _INVERTNORMALTRANSLUCENT
+			#pragma shader_feature _ _INVERTNORMAL
 			#include "Translucent.cginc"
 
 			ENDCG

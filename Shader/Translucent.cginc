@@ -349,6 +349,9 @@
         #if defined(FORWARD_BACK_PASS)
             i.normal *= -1;
         #endif
+        #if defined(_INVERTNORMAL)
+            i.normal *= -1;
+        #endif
         i.viewDir = WorldSpaceViewDir (v.vertex);
 
         ComputeVertexLightColor(v);
@@ -358,6 +361,7 @@
 
     float3 TranslucentLightFrag(v2f i){
         float3 inversedNormal = i.normal;
+
         #if defined(_INVERTNORMALTRANSLUCENT)
             inversedNormal *= -1;
         #endif
