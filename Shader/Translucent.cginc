@@ -297,9 +297,6 @@
         float3 viewDir = normalize(i.viewDir);
         light.ndotl = clamp(light.ndotl * 0.8 + pow((-abs(dot(normal, light.dir)) + 1), 0.5), 0, 1);
         float3 normal4view = -normal;
-#if defined(FORWARD_BACK_PASS)
-            normal4view *= -1;
-        #endif
         #if defined(_INVERTNORMAL)
             normal4view *= -1;
         #endif

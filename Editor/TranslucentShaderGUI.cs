@@ -191,8 +191,10 @@ public class TranslucentShaderGUI : ShaderGUI{
             sliderSSS,
             MakeLabel(sliderSSS, "Increase / Reduce Translucency area")
         );
+        invertTransNormal = IsKeywordEnabled("_INVERTNORMALTRANSLUCENT");
+        invertNormal = IsKeywordEnabled("_INVERTNORMAL");
         invertTransNormal = EditorGUILayout.Toggle("Invert Translucent normal", invertTransNormal);
-
+        
         SetKeyword("_INVERTNORMALTRANSLUCENT", invertTransNormal);
         invertNormal = EditorGUILayout.Toggle("Invert normal", invertNormal);
 
