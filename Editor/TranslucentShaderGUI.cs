@@ -7,6 +7,11 @@ enum RenderingMode
     Opaque, Cutout, Fade, Transparent
 }
 
+enum ShadowsCUlling
+{
+    Back, Front, Off
+}
+
 struct RenderingSettings
 {
     public RenderQueue queue;
@@ -206,7 +211,35 @@ public class TranslucentShaderGUI : ShaderGUI{
 
     void DoRenderingMode()
     {
-        RenderingMode mode = RenderingMode.Opaque;
+        ShadowsCUlling shadowCulling = ShadowsCUlling.Off;
+        switch (Mathf.RoundToInt(target.GetFloat("_ShadowsCulling"))){
+            case 0:
+                shadowCulling = ShadowsCUlling.Back;
+                break;
+
+            case 1:
+                shadowCulling = ShadowsCUlling.Front;
+                break;
+        }
+        EditorGUI.BeginChangeCheck();
+        shadowCulling = ( ShadowsCUlling ) EditorGUILayout.EnumPopup(
+            MakeLabel("ShadowCulling"), shadowCulling
+        );
+        if (EditorGUI.EndChangeCheck())
+        {
+            RecordAction("ShadowCulling");
+            foreach (Material m in editor.targets)
+            {
+                if (shadowCulling == ShadowsCUlling.Back)
+                    m.SetInt("_ShadowsCulling", 0);
+                else if (shadowCulling == ShadowsCUlling.Front)
+                    m.SetInt("_ShadowsCulling", 1);
+                else
+                    m.SetInt("_ShadowsCulling", 2);
+            }
+        }
+
+            RenderingMode mode = RenderingMode.Opaque;
         shouldShowAlphaCutoff = false;
         if (IsKeywordEnabled("_RENDERING_CUTOUT"))
         {

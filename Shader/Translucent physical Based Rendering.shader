@@ -33,6 +33,8 @@
 		[NoScaleOffset] _DetailNormalMap ("Detail Normals", 2D) = "bump" {}
 		_DetailBumpScale ("Detail Bump Scale", Float) = 1
 
+		[HideInInspector] _ShadowsCulling ("Shadow Culling", Float) = 1.0 // 0 = back , 1 = front , 2 = null
+
 		[HideInInspector] _SrcBlend ("_SrcBlend", Float) = 1
 		[HideInInspector] _DstBlend ("_DstBlend", Float) = 0
 		[HideInInspector] _ZWrite ("_ZWrite", Float) = 1
@@ -184,7 +186,7 @@
 			Tags {
 				"LightMode" = "ShadowCaster"
 			}
-			Cull Off
+			Cull [_ShadowsCulling]
 			CGPROGRAM
 
 			#pragma target 3.0
